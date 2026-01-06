@@ -116,8 +116,9 @@ const calloutStyles = {
 };
 
 function ImageBlock({ value }: { value: SanityImage }) {
-  if (!value?.asset) return null;
   const { openLightbox } = useLightbox();
+  
+  if (!value?.asset) return null;
   
   const dims = value.asset._ref ? getImageDimensions(value.asset._ref) : { width: 1600, height: 900, aspectRatio: 16/9 };
   
@@ -161,8 +162,9 @@ function ImageBlock({ value }: { value: SanityImage }) {
 }
 
 function ImageGalleryBlock({ value }: { value: ImageGallery }) {
-  if (!value?.images?.length) return null;
   const { openLightbox } = useLightbox();
+  
+  if (!value?.images?.length) return null;
 
   return (
     <motion.div
