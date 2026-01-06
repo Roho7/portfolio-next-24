@@ -168,13 +168,15 @@ export function CaseStudyHero({ project }: CaseStudyHeroProps) {
           className="relative mt-8 md:mt-12"
         >
           <div className="container mx-auto px-4 md:px-6">
-            <div className="relative aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-2xl md:rounded-3xl">
+            <div className="relative w-full overflow-hidden rounded-2xl md:rounded-3xl">
               <Image
-                src={urlFor(project.heroImage).width(1920).height(820).url()}
+                src={urlFor(project.heroImage).width(1920).url()}
                 alt={project.heroImage.alt || project.title}
-                fill
+                width={1920}
+                height={1080}
                 priority
-                className="object-cover"
+                className="w-full h-auto object-cover object-center"
+                style={{ maxHeight: 'none' }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent" />
             </div>
@@ -225,4 +227,6 @@ function getEmbedUrl(url: string): string {
   }
   return url;
 }
+
+
 

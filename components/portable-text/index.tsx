@@ -5,8 +5,101 @@ import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 import { cn } from "@/lib/utils";
 import type { ContentBlock, ImageGallery, VideoEmbed, CodeBlock, Section, Callout, Stats, SanityImage } from "@/sanity/lib/types";
-import { motion } from "motion/react";
-import { Info, AlertTriangle, CheckCircle, Quote } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
+import { Info, AlertTriangle, CheckCircle, Quote, X, ZoomIn } from "lucide-react";
+import { createContext, useContext, useState, useEffect } from "react";
+
+// --- Lightbox Context & Components ---
+
+interface LightboxContextType {
+  openLightbox: (image: SanityImage) => void;
+  closeLightbox: () => void;
+}
+
+const LightboxContext = createContext<LightboxContextType | null>(null);
+
+function useLightbox() {
+  const context = useContext(LightboxContext);
+  if (!context) {
+    throw new Error("useLightbox must be used within a LightboxProvider");
+  }
+  return context;
+}
+
+function Lightbox({ image, onClose }: { image: SanityImage | null; onClose: () => void }) {
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    if (image) {
+      document.addEventListener("keydown", handleEsc);
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.removeEventListener("keydown", handleEsc);
+      document.body.style.overflow = "";
+    };
+  }, [image, onClose]);
+
+  return (
+    <AnimatePresence>
+      {image && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="fixed inset-0 z-50 flex items-start justify-center bg-background/80 backdrop-blur-md overflow-y-auto py-8 px-4"
+          onClick={onClose}
+        >
+          <button
+            onClick={onClose}
+            className="fixed top-4 right-4 p-2 rounded-full bg-background/50 hover:bg-background border border-border transition-colors z-50"
+          >
+            <X className="w-6 h-6" />
+            <span className="sr-only">Close</span>
+          </button>
+          
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="relative w-[80vw] max-w-[80vw]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              src={urlFor(image).url()}
+              alt={image.alt || ""}
+              width={1920}
+              height={1080}
+              className="w-full h-auto"
+              sizes="80vw"
+              priority
+            />
+            {image.caption && (
+              <div className="mt-4 text-center p-4 bg-black/50 backdrop-blur-sm rounded-xl">
+                <p className="text-white text-sm">{image.caption}</p>
+              </div>
+            )}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+// --- Helper for Aspect Ratio ---
+
+const getImageDimensions = (id: string) => {
+    const pattern = /^image-([a-f\d]+)-(\d+x\d+)-(\w+)$/;
+    const match = pattern.exec(id);
+    if (!match) return { width: 16, height: 9, aspectRatio: 16/9 };
+    const [_, assetId, dimensions, format] = match;
+    const [width, height] = dimensions.split('x').map(Number);
+    return { width, height, aspectRatio: width / height };
+};
+
 
 const calloutIcons = {
   info: Info,
@@ -24,6 +117,9 @@ const calloutStyles = {
 
 function ImageBlock({ value }: { value: SanityImage }) {
   if (!value?.asset) return null;
+  const { openLightbox } = useLightbox();
+  
+  const dims = value.asset._ref ? getImageDimensions(value.asset._ref) : { width: 1600, height: 900, aspectRatio: 16/9 };
   
   const layoutClasses = {
     full: "w-full",
@@ -39,13 +135,21 @@ function ImageBlock({ value }: { value: SanityImage }) {
       viewport={{ once: true }}
       className={cn("my-8 md:my-12", layoutClasses[value.layout || "wide"])}
     >
-      <div className="relative aspect-video overflow-hidden rounded-xl">
+      <div 
+        className="relative overflow-hidden rounded-xl cursor-zoom-in bg-muted/20 group"
+        onClick={() => openLightbox(value)}
+      >
         <Image
           src={urlFor(value).width(1200).url()}
           alt={value.alt || ""}
-          fill
-          className="object-cover"
+          width={dims.width}
+          height={dims.height}
+          className="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
         />
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+             <ZoomIn className="text-white w-10 h-10 drop-shadow-md" />
+        </div>
       </div>
       {value.caption && (
         <figcaption className="text-center text-muted-foreground text-sm mt-3">
@@ -58,6 +162,7 @@ function ImageBlock({ value }: { value: SanityImage }) {
 
 function ImageGalleryBlock({ value }: { value: ImageGallery }) {
   if (!value?.images?.length) return null;
+  const { openLightbox } = useLightbox();
 
   return (
     <motion.div
@@ -72,13 +177,21 @@ function ImageGalleryBlock({ value }: { value: ImageGallery }) {
       )}
     >
       {value.images.map((img, index) => (
-        <figure key={index} className="relative aspect-square overflow-hidden rounded-xl">
+        <figure 
+            key={index} 
+            className="relative aspect-square overflow-hidden rounded-xl cursor-zoom-in group"
+            onClick={() => openLightbox(img)}
+        >
           <Image
             src={urlFor(img).width(600).height(600).url()}
             alt={img.alt || ""}
             fill
-            className="object-cover transition-transform duration-500 hover:scale-105"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            sizes="(max-width: 768px) 50vw, 33vw"
           />
+           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+             <ZoomIn className="text-white w-8 h-8 drop-shadow-md" />
+            </div>
         </figure>
       ))}
     </motion.div>
@@ -295,10 +408,17 @@ interface PortableTextRendererProps {
 }
 
 export function PortableTextRenderer({ content }: PortableTextRendererProps) {
+  const [lightboxImage, setLightboxImage] = useState<SanityImage | null>(null);
+
   return (
-    <div className="max-w-4xl mx-auto">
-      <PortableText value={content as any} components={portableTextComponents} />
-    </div>
+    <LightboxContext.Provider value={{ 
+        openLightbox: setLightboxImage, 
+        closeLightbox: () => setLightboxImage(null) 
+    }}>
+      <div className="max-w-4xl mx-auto">
+        <PortableText value={content as any} components={portableTextComponents} />
+      </div>
+      <Lightbox image={lightboxImage} onClose={() => setLightboxImage(null)} />
+    </LightboxContext.Provider>
   );
 }
-

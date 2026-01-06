@@ -55,11 +55,6 @@ export function ProjectCard({ project, index = 0, featured = false }: ProjectCar
               <h3 className="text-xl md:text-2xl font-display font-bold tracking-tight mb-1 truncate group-hover:text-primary transition-colors">
                 {project.title}
               </h3>
-              {project.subtitle && (
-                <p className="text-muted-foreground text-sm truncate">
-                  {project.subtitle}
-                </p>
-              )}
               {project.tags && project.tags.length > 0 && (
                 <div className="flex flex-wrap gap-1.5 mt-3">
                   {project.tags.slice(0, 3).map((tag) => (
