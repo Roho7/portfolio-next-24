@@ -1,12 +1,12 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform, useSpring, useVelocity, useMotionValueEvent } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "./button";
 import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 
 const navLinks = [
@@ -15,6 +15,120 @@ const navLinks = [
   { href: "/#about", label: "About" },
   { href: "/#contact", label: "Contact" },
 ];
+
+function Notch() {
+  const pathname = usePathname();
+  const { scrollY } = useScroll();
+  const scrollVelocity = useVelocity(scrollY);
+  const smoothVelocity = useSpring(scrollVelocity, { damping: 50, stiffness: 400 });
+  
+  // Stretch based on velocity (physics based fluid animation)
+  const scaleY = useTransform(smoothVelocity, [-2000, 0, 2000], [0.9, 1, 1.2]);
+  const widthTransform = useTransform(smoothVelocity, [-2000, 0, 2000], [1.018, 1, 0.98]);
+  // Use inverse scale for content to keep it stable
+  const contentScaleY = useTransform(smoothVelocity, [-2000, 0, 2000], [1/0.9, 1, 1/1.2]);
+  const contentScaleX = useTransform(smoothVelocity, [-2000, 0, 2000], [1/1.018, 1, 1/0.98]);
+
+  const [isHovered, setIsHovered] = useState(false);
+  const [activeTab, setActiveTab] = useState(pathname);
+  
+  // Jiggle animation state
+  const [isJiggling, setIsJiggling] = useState(false);
+
+  const handleLinkClick = (href: string) => {
+    setActiveTab(href);
+    // Trigger jiggle
+    setIsJiggling(true);
+    setTimeout(() => setIsJiggling(false), 400);
+  };
+
+  return (
+    <motion.div
+      style={{ 
+        scaleY, 
+        scaleX: widthTransform,
+        transformOrigin: "top",
+      }}
+      animate={isJiggling ? {
+        scaleX: [1, 2.5, 0.95, 1.62, 0.98, 1],
+        transition: { duration: 0.4 }
+      } : {}}
+      className="fixed inset-0  z-[60] hidden md:flex flex-col items-center pointer-events-none"
+    >
+      {/* The Notch Container */}
+      <div 
+        className="relative bg-black text-white px-2 pb-2 pt-0 rounded-b-[24px] shadow-lg flex items-center gap-1 border-b border-white/10 pointer-events-auto"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {/* Left Connector */}
+        <svg 
+          width="20" 
+          height="20" 
+          viewBox="0 0 20 20" 
+          fill="none" 
+          xmlns="http://www.w3.org/2000/svg"
+          className="absolute -left-5 top-0 text-black fill-current"
+        >
+          <path d="M20 20C20 8.95431 11.0457 0 0 0H20V20Z" />
+        </svg>
+
+        {/* Right Connector */}
+        <svg 
+          width="20" 
+          height="20" 
+          viewBox="0 0 20 20" 
+          fill="none" 
+          xmlns="http://www.w3.org/2000/svg"
+          className="absolute -right-5 top-0 text-black fill-current"
+        >
+           <path d="M0 20C0 8.95431 8.95431 0 20 0H0V20Z" />
+        </svg>
+
+        <motion.div 
+          className="flex items-center px-4 py-2 gap-2"
+          style={{
+             scaleX: contentScaleX,
+             scaleY: contentScaleY,
+          }}
+          animate={isJiggling ? {
+            scaleX: [1, 1/2.5, 1/0.95, 1/1.62, 1/0.98, 1],
+            transition: { duration: 0.4 }
+          } : {}}
+        >
+           {navLinks.map((link) => {
+             const isActive = activeTab === link.href;
+             return (
+               <Link 
+                 key={link.href} 
+                 href={link.href}
+                 onClick={() => handleLinkClick(link.href)}
+               >
+                 <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className={cn(
+                      "px-4 py-2 rounded-full text-sm font-medium transition-colors relative",
+                      isActive ? "text-white bg-primary/60" : "text-white/60 hover:text-white "
+                    )}
+                 >
+                   {/* {isActive && ( */}
+                     {/* <motion.div
+                       layoutId="notch-pill"
+                       className="absolute inset-0 bg-primary/40 rounded-full"
+                       transition={{ type: "spring", bounce: 0.2, duration: 0.2 }}
+                     /> */}
+                   {/* )} */}
+                   <span className="relative z-10">{link.label}</span>
+                 </motion.div>
+               </Link>
+             );
+           })}
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+}
 
 export function Navbar() {
   const pathname = usePathname();
@@ -29,19 +143,21 @@ export function Navbar() {
   const backdropBlur = useTransform(scrollY, [0, 100], ["blur(0px)", "blur(12px)"]);
   const borderOpacity = useTransform(scrollY, [0, 100], [0, 1]);
 
-  if (pathname?.startsWith("/studio")) return null;
 
   return (
     <>
+      {/* Desktop Notch */}
+      <Notch />
+
       <motion.header
-        style={{ backgroundColor, backdropFilter: backdropBlur }}
-        className="fixed top-0 left-0 right-0 z-50"
+        // style={{ backdropFilter: backdropBlur }}
+        className="fixed top-0 left-0 right-0 z-50 pointer-events-none md:pointer-events-auto"
       >
         <motion.div
-          style={{ opacity: borderOpacity }}
-          className="absolute bottom-0 left-0 right-0 h-px bg-border"
+          // style={{ opacity: borderOpacity }}
+          className="absolute bottom-0 left-0 right-0 h-px"
         />
-        <nav className="container mx-auto px-4 md:px-6">
+        <nav className="container mx-auto px-4 md:px-6 pointer-events-auto">
           <div className="flex h-16 md:h-20 items-center justify-between">
             <Link href="/" className="flex items-center gap-2">
               <motion.div
@@ -56,21 +172,8 @@ export function Navbar() {
               </span>
             </Link>
 
-            <div className="hidden md:flex items-center gap-1">
-              {navLinks.map((link) => (
-                <Link key={link.href} href={link.href}>
-                  <Button
-                    variant="ghost"
-                    className={cn(
-                      "text-muted-foreground hover:text-foreground",
-                      pathname === link.href && "text-foreground bg-accent"
-                    )}
-                  >
-                    {link.label}
-                  </Button>
-                </Link>
-              ))}
-            </div>
+            {/* Hidden on Desktop, replaced by Notch */}
+            <div className="hidden md:block w-[1px]" /> 
 
             <div className="flex items-center gap-4">
               <Link href="mailto:rohosen2@gmail.com?subject=Hello Roho! I'd like to discuss a project with you." className="hidden md:block">
@@ -137,4 +240,3 @@ export function Navbar() {
     </>
   );
 }
-
