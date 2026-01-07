@@ -61,7 +61,7 @@ export function MagicCard({
     >
       {/* Outer Glow (Border Glow) - Revealed on group hover */}
       <div
-        className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-300 group-hover/magic-container:opacity-100"
+        className=" pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-300 group-hover/magic-container:opacity-100"
         style={{
           background: `radial-gradient(${gradientSize}px circle at var(--mouse-x) var(--mouse-y), ${gradientColor}, transparent 100%)`,
           opacity: gradientOpacity,
@@ -70,7 +70,7 @@ export function MagicCard({
       
       {/* Inner Card (Content) */}
       <div className={cn(
-        "relative h-full w-full rounded-[11px] bg-card overflow-hidden",
+        "relative h-full w-full rounded-[11px] bg-card overflow-hidden ",
         className
       )}>
          {/* Inner Glow (Content Glow) - Revealed on local hover */}
@@ -81,6 +81,9 @@ export function MagicCard({
              opacity: gradientOpacity * 0.5,
            }}
          />
+
+      <div className="absolute inset-0 noise pointer-events-none" />
+
          
          {/* Content */}
          <div className="relative h-full">

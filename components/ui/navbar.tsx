@@ -150,11 +150,9 @@ export function Navbar() {
       <Notch />
 
       <motion.header
-        // style={{ backdropFilter: backdropBlur }}
         className="fixed top-0 left-0 right-0 z-50 pointer-events-none md:pointer-events-auto"
       >
         <motion.div
-          // style={{ opacity: borderOpacity }}
           className="absolute bottom-0 left-0 right-0 h-px"
         />
         <nav className="container mx-auto px-4 md:px-6 pointer-events-auto">
@@ -182,7 +180,7 @@ export function Navbar() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="md:hidden"
+                className="md:hidden bg-black rounded-full aspect-square"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
                 {mobileMenuOpen ? <X /> : <Menu />}
