@@ -7,7 +7,7 @@ dotenv.config({ path: ".env.migration" });
 // ─── Clients ──────────────────────────────────────────────────────────────────
 
 export const gemini = new GoogleGenAI({
-  apiKey: 'AIzaSyDpMd0DQaf9McY_xyVG4YGWHORdfUSCWXI'
+  apiKey: process.env.GEMINI_API_KEY
 });
 
 const sanity = createClient({
