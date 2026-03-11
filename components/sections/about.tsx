@@ -10,8 +10,15 @@ import Link from "next/link";
 const experience = [
   {
     company: "Periskope",
+    role: "Senior Founding Engineer",
+    period: "2026 - Prese",
+    description: "Building the AI Agents and Automations for WhatsApp at Periskope",
+    link: "https://periskope.app/",
+  },
+  {
+    company: "Periskope",
     role: "Full-Stack Developer",
-    period: "2023 - Present",
+    period: "2023 - 2025",
     description: "One of the first 5 employees. Built over 10 large features and counting.",
     link: "https://periskope.app/",
   },

@@ -42,12 +42,12 @@ export function Hero() {
             </span>
           </motion.div>
 
-          <h1 className="text-4xl max-lg:my-8 md:text-7xl lg:text-8xl xl:text-9xl font-display font-bold tracking-tight mb-6">
+          <h1 className="text-4xl max-lg:my-8 md:text-7xl lg:text-8xl xl:text-9xl font-display font-bold tracking-tight mb-6 flex flex-col items-center justify-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="block"
+              className=""
             >
               <SlotMachine
                 items={["Building", "Architecting", "Designing", "Developing"]}
