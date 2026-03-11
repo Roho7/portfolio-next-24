@@ -1,7 +1,7 @@
 import { groq } from "next-sanity";
 
 export const projectsQuery = groq`
-  *[_type == "project" && !hidden] | order(order asc, publishedAt desc) {
+  *[_type == "project" && !hidden] | order(year desc, order asc) {
     _id,
     title,
     slug,
@@ -22,7 +22,7 @@ export const projectsQuery = groq`
 `;
 
 export const projectsByCategory = groq`
-  *[_type == "project" && !hidden && category->slug.current == $category] | order(order asc) {
+  *[_type == "project" && !hidden && category->slug.current == $category] | order(year desc, order asc) {
     _id,
     title,
     slug,
@@ -43,7 +43,7 @@ export const projectsByCategory = groq`
 `;
 
 export const featuredProjectsQuery = groq`
-  *[_type == "project" && !hidden && featured == true] | order(order asc) {
+  *[_type == "project" && !hidden && featured == true] | order(year desc, order asc) {
     _id,
     title,
     slug,
