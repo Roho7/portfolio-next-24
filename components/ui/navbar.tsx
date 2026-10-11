@@ -21,17 +21,17 @@ function Notch() {
   const { scrollY } = useScroll();
   const scrollVelocity = useVelocity(scrollY);
   const smoothVelocity = useSpring(scrollVelocity, { damping: 50, stiffness: 400 });
-  
+
   // Stretch based on velocity (physics based fluid animation)
   const scaleY = useTransform(smoothVelocity, [-2000, 0, 2000], [0.9, 1, 1.2]);
   const widthTransform = useTransform(smoothVelocity, [-2000, 0, 2000], [1.018, 1, 0.98]);
   // Use inverse scale for content to keep it stable
-  const contentScaleY = useTransform(smoothVelocity, [-2000, 0, 2000], [1/0.9, 1, 1/1.2]);
-  const contentScaleX = useTransform(smoothVelocity, [-2000, 0, 2000], [1/1.018, 1, 1/0.98]);
+  const contentScaleY = useTransform(smoothVelocity, [-2000, 0, 2000], [1 / 0.9, 1, 1 / 1.2]);
+  const contentScaleX = useTransform(smoothVelocity, [-2000, 0, 2000], [1 / 1.018, 1, 1 / 0.98]);
 
   const [isHovered, setIsHovered] = useState(false);
   const [activeTab, setActiveTab] = useState(pathname);
-  
+
   // Jiggle animation state
   const [isJiggling, setIsJiggling] = useState(false);
 
@@ -44,8 +44,8 @@ function Notch() {
 
   return (
     <motion.div
-      style={{ 
-        scaleY, 
+      style={{
+        scaleY,
         scaleX: widthTransform,
         transformOrigin: "top",
       }}
@@ -56,17 +56,17 @@ function Notch() {
       className="fixed inset-0  z-[60] hidden md:flex flex-col items-center pointer-events-none"
     >
       {/* The Notch Container */}
-      <div 
+      <div
         className="relative bg-black text-white px-2 pb-2 pt-0 rounded-b-[24px] shadow-lg flex items-center gap-1 border-b border-white/10 pointer-events-auto"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Left Connector */}
-        <svg 
-          width="20" 
-          height="20" 
-          viewBox="0 0 20 20" 
-          fill="none" 
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
           xmlns="http://www.w3.org/2000/svg"
           className="absolute -left-5 top-0 text-black fill-current"
         >
@@ -74,56 +74,56 @@ function Notch() {
         </svg>
 
         {/* Right Connector */}
-        <svg 
-          width="20" 
-          height="20" 
-          viewBox="0 0 20 20" 
-          fill="none" 
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
           xmlns="http://www.w3.org/2000/svg"
           className="absolute -right-5 top-0 text-black fill-current"
         >
-           <path d="M0 20C0 8.95431 8.95431 0 20 0H0V20Z" />
+          <path d="M0 20C0 8.95431 8.95431 0 20 0H0V20Z" />
         </svg>
 
-        <motion.div 
+        <motion.div
           className="flex items-center px-4 py-2 gap-2"
           style={{
-             scaleX: contentScaleX,
-             scaleY: contentScaleY,
+            scaleX: contentScaleX,
+            scaleY: contentScaleY,
           }}
           animate={isJiggling ? {
-            scaleX: [1, 1/2.5, 1/0.95, 1/1.62, 1/0.98, 1],
+            scaleX: [1, 1 / 2.5, 1 / 0.95, 1 / 1.62, 1 / 0.98, 1],
             transition: { duration: 0.4 }
           } : {}}
         >
-           {navLinks.map((link) => {
-             const isActive = activeTab === link.href;
-             return (
-               <Link 
-                 key={link.href} 
-                 href={link.href}
-                 onClick={() => handleLinkClick(link.href)}
-               >
-                 <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className={cn(
-                      "px-4 py-2 rounded-full text-sm font-medium transition-colors relative",
-                      isActive ? "text-white bg-primary/60" : "text-white/60 hover:text-white "
-                    )}
-                 >
-                   {/* {isActive && ( */}
-                     {/* <motion.div
+          {navLinks.map((link) => {
+            const isActive = activeTab === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => handleLinkClick(link.href)}
+              >
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={cn(
+                    "px-4 py-2 rounded-full text-sm font-medium transition-colors relative",
+                    isActive ? "text-white bg-primary/60" : "text-white/60 hover:text-white "
+                  )}
+                >
+                  {/* {isActive && ( */}
+                  {/* <motion.div
                        layoutId="notch-pill"
                        className="absolute inset-0 bg-primary/40 rounded-full"
                        transition={{ type: "spring", bounce: 0.2, duration: 0.2 }}
                      /> */}
-                   {/* )} */}
-                   <span className="relative z-10">{link.label}</span>
-                 </motion.div>
-               </Link>
-             );
-           })}
+                  {/* )} */}
+                  <span className="relative z-10">{link.label}</span>
+                </motion.div>
+              </Link>
+            );
+          })}
         </motion.div>
       </div>
     </motion.div>
@@ -165,13 +165,10 @@ export function Navbar() {
               >
                 <Image src="/logo.png" alt="Rohosen" width={32} height={32} className="text-primary-foreground font-bold text-lg" />
               </motion.div>
-              <span className="font-display font-bold text-lg hidden sm:block">
-                Rohosen
-              </span>
             </Link>
 
             {/* Hidden on Desktop, replaced by Notch */}
-            <div className="hidden md:block w-[1px]" /> 
+            <div className="hidden md:block w-[1px]" />
 
             <div className="flex items-center gap-4">
               <Link href="mailto:rohosen2@gmail.com?subject=Hello Roho! I'd like to discuss a project with you." className="hidden md:block">
