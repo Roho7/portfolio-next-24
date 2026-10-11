@@ -10,6 +10,7 @@ export const projectsQuery = groq`
     year,
     tags,
     featured,
+    order,
     heroImage {
       asset->,
       alt
@@ -31,6 +32,7 @@ export const projectsByCategory = groq`
     year,
     tags,
     featured,
+    order,
     heroImage {
       asset->,
       alt
@@ -49,6 +51,7 @@ export const featuredProjectsQuery = groq`
     slug,
     subtitle,
     excerpt,
+    order,
     heroImage {
       asset->,
       alt
@@ -65,6 +68,7 @@ export const projectBySlugQuery = groq`
     excerpt,
     year,
     tags,
+    order,
     heroImage {
       asset->,
       alt

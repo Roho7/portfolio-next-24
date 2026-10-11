@@ -43,7 +43,7 @@ export function ProjectCard({ project, index = 0, featured = false }: ProjectCar
           <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent opacity-60" />
           <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent opacity-0 group-hover:opacity-80 transition-opacity duration-500" />
         </div>
-        
+
         <div className="absolute bottom-0 left-0 right-0 p-6">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1 min-w-0">
@@ -74,13 +74,13 @@ export function ProjectCard({ project, index = 0, featured = false }: ProjectCar
           </div>
         </div>
 
-        <BorderBeam
+        {/* <BorderBeam
           size={300}
           duration={10}
           colorFrom="hsl(var(--primary))"
           colorTo="hsl(var(--primary) / 0.2)"
           className="opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        />
+        /> */}
       </motion.article>
     </Link>
   );

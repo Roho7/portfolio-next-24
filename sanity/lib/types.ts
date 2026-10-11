@@ -89,6 +89,7 @@ export interface Project {
   excerpt?: string;
   year?: string;
   tags?: string[];
+  order?: number;
   featured?: boolean;
   heroImage?: SanityImage;
   heroVideo?: string;
@@ -109,5 +110,6 @@ export interface ProjectCard {
   featured?: boolean;
   heroImage?: SanityImage;
   category?: Category;
+  order?: number;
 }
 

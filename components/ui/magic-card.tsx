@@ -13,7 +13,7 @@ export function MagicContainer({ children, className }: MagicContainerProps) {
 
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
-    
+
     const { clientX, clientY } = e;
     const cards = containerRef.current.getElementsByClassName("magic-card");
 
@@ -48,9 +48,9 @@ interface MagicCardProps {
 export function MagicCard({
   children,
   className,
-  gradientSize = 300,
+  gradientSize = 800,
   gradientColor = "hsl(var(--primary))",
-  gradientOpacity = 0.5,
+  gradientOpacity = 0.2,
 }: MagicCardProps) {
   return (
     <div
@@ -67,28 +67,28 @@ export function MagicCard({
           opacity: gradientOpacity,
         }}
       />
-      
+
       {/* Inner Card (Content) */}
       <div className={cn(
         "relative h-full w-full rounded-[11px] bg-card overflow-hidden ",
         className
       )}>
-         {/* Inner Glow (Content Glow) - Revealed on local hover */}
-         <div 
-           className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 hover:opacity-100"
-           style={{
-             background: `radial-gradient(${gradientSize * 0.6}px circle at var(--mouse-x) var(--mouse-y), ${gradientColor}, transparent 100%)`,
-             opacity: gradientOpacity * 0.5,
-           }}
-         />
+        {/* Inner Glow (Content Glow) - Revealed on local hover */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 hover:opacity-100"
+          style={{
+            background: `radial-gradient(${gradientSize * 0.6}px circle at var(--mouse-x) var(--mouse-y), ${gradientColor}, transparent 100%)`,
+            opacity: gradientOpacity * 0.5,
+          }}
+        />
 
-      <div className="absolute inset-0 noise pointer-events-none" />
+        <div className="absolute inset-0 noise pointer-events-none" />
 
-         
-         {/* Content */}
-         <div className="relative h-full">
-            {children}
-         </div>
+
+        {/* Content */}
+        <div className="relative h-full">
+          {children}
+        </div>
       </div>
     </div>
   );
