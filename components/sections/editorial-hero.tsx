@@ -83,26 +83,6 @@ function useNameGlitch(length: number, enabled: boolean) {
   return glitches;
 }
 
-function LocalTime() {
-  const [time, setTime] = useState<string | null>(null);
-
-  useEffect(() => {
-    const format = () =>
-      new Intl.DateTimeFormat("en-GB", {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        timeZone: TIMEZONE,
-      }).format(new Date());
-
-    setTime(format());
-    const id = setInterval(() => setTime(format()), 1000);
-    return () => clearInterval(id);
-  }, []);
-
-  return <span className="tabular-nums">{time ?? "--:--:--"} IST</span>;
-}
-
 function MetaItem({
   label,
   children,
@@ -285,6 +265,7 @@ const TOOLTIP_LINES = [
   <>Just call me {styledText("Roho")}</>,
   <>I prefer {styledText("Roho")}</>,
   <>Just {styledText("Roho")} is fine</>,
+  <span key="face" className="flex">```<Image src="/cropped-face.png" alt="Roho" width={64} height={64} />```</span>,
   <>&quot;{styledText("Sen")}&quot; is not my surname</>,
 ];
 

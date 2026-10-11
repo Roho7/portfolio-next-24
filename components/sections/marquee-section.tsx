@@ -12,15 +12,15 @@ const skills = [
   "PostgreSQL",
   "Express.js",
   "Figma",
-"Clickhouse",
-"Python",
-"Docker",
-"Kubernetes",
-"AWS",
-"GCP",
-"BullMQ",
-"RabbitMQ",
-"Redis"
+  "Clickhouse",
+  "Python",
+  "Docker",
+  "Kubernetes",
+  "AWS",
+  "GCP",
+  "BullMQ",
+  "RabbitMQ",
+  "Redis"
 
 ];
 
@@ -51,7 +51,7 @@ function MarqueeItem({ text, highlight = false }: { text: string; highlight?: bo
 
 export function MarqueeSection() {
   return (
-    <section className="py-16 overflow-hidden border-y border-border bg-card/30">
+    <section className="pt-20 overflow-hidden bg-card/30">
       <Marquee pauseOnHover duration="30s" gap="1rem">
         {skills.map((skill, index) => (
           <MarqueeItem key={skill} text={skill} highlight={index % 3 === 0} />

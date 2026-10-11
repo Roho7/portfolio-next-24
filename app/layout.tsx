@@ -9,6 +9,7 @@ import {
 import "./globals.css";
 import { Navbar } from "@/components/ui/navbar";
 import { Footer } from "@/components/ui/footer";
+import { CreepPeek } from "@/components/ui/creep-peek";
 
 const displayFont = Space_Grotesk({
   subsets: ["latin"],
@@ -96,6 +97,7 @@ export default function RootLayout({
         <Navbar />
         <main>{children}</main>
         <Footer />
+        <CreepPeek peek={0.65} schedule={{ firstAfter: [5000, 10000], gap: [20000, 45000], stay: 3000, }} />
       </body>
     </html>
   );

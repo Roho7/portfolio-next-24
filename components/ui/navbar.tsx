@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "./button";
 import { Menu, X } from "lucide-react";
-import { useEffect, useState, useRef } from "react";
+import { useState } from "react";
 import Image from "next/image";
 
 const navLinks = [
@@ -109,7 +109,7 @@ function Notch() {
                   whileTap={{ scale: 0.95 }}
                   className={cn(
                     "px-4 py-2 rounded-full text-sm font-medium transition-colors relative",
-                    isActive ? "text-white bg-primary/60" : "text-white/60 hover:text-white "
+                    isActive ? "text-background bg-primary" : "text-white/60 hover:text-white "
                   )}
                 >
                   {/* {isActive && ( */}

@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { motion } from "motion/react";
 import { Briefcase, GraduationCap, MapPin, Calendar, ExternalLink } from "lucide-react";
 import Link from "next/link";
+import { useCreepTrigger } from "@/components/ui/creep-peek";
 
 const experience = [
   {
@@ -63,6 +64,7 @@ const education = [
     institution: "Amity University Noida",
     period: "2020 - 2023",
     note: "",
+    summonsCreep: true,
   },
 ];
 
@@ -117,6 +119,8 @@ function ExperienceCard() {
 }
 
 function EducationCard() {
+  const creepTrigger = useCreepTrigger();
+
   return (
     <MagicCard className="p-8 h-full">
       <div className="flex items-center gap-3 mb-6">
@@ -137,7 +141,15 @@ function EducationCard() {
             <div className="flex items-start justify-between gap-4">
               <div>
                 <h4 className="text-lg font-semibold">{edu.degree}</h4>
-                <p className="text-muted-foreground">{edu.institution}</p>
+                <p className="text-muted-foreground">
+                  {"summonsCreep" in edu ? (
+                    <span {...creepTrigger} className="cursor-default">
+                      {edu.institution}
+                    </span>
+                  ) : (
+                    edu.institution
+                  )}
+                </p>
                 {edu.note && (
                   <Badge variant="ghost" className="mt-2">
                     {edu.note}
