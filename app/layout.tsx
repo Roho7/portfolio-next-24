@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, DM_Sans, JetBrains_Mono } from "next/font/google";
+import {
+  Space_Grotesk,
+  DM_Sans,
+  JetBrains_Mono,
+  Bricolage_Grotesque,
+  Instrument_Serif,
+} from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/ui/navbar";
 import { Footer } from "@/components/ui/footer";
@@ -19,6 +25,20 @@ const sansFont = DM_Sans({
 const monoFont = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
+  display: "swap",
+});
+
+const heroFont = Bricolage_Grotesque({
+  subsets: ["latin"],
+  variable: "--font-hero",
+  display: "swap",
+});
+
+const serifFont = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-serif",
   display: "swap",
 });
 
@@ -69,7 +89,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${displayFont.variable} ${sansFont.variable} ${monoFont.variable}`}
+      className={`${displayFont.variable} ${sansFont.variable} ${monoFont.variable} ${heroFont.variable} ${serifFont.variable}`}
       suppressHydrationWarning
     >
       <body className="font-sans antialiased">

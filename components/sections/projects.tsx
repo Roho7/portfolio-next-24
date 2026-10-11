@@ -25,8 +25,7 @@ export function Projects({ projects, categories }: ProjectsProps) {
       <div className="container mx-auto px-4 md:px-6">
         <SectionHeader
           number="01"
-          title="Selected Work"
-          subtitle="A collection of projects I've worked on, from full-stack applications to design systems."
+          title="All Work"
         />
 
         {categories.length > 0 && (
@@ -57,7 +56,7 @@ export function Projects({ projects, categories }: ProjectsProps) {
         >
           <AnimatePresence mode="popLayout">
             {filteredProjects.length > 0 ? (
-              filteredProjects.map((project, index) => (
+              filteredProjects.sort((a, b) => (a.order || 0) - (b.order || 0)).map((project, index) => (
                 <motion.div
                   key={project._id}
                   layout

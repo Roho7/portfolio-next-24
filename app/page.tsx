@@ -1,4 +1,5 @@
 import { Hero } from "@/components/sections/hero";
+import { EditorialHero } from "@/components/sections/editorial-hero";
 import { Projects, ProjectsSkeleton } from "@/components/sections/projects";
 import { About } from "@/components/sections/about";
 import { MarqueeSection } from "@/components/sections/marquee-section";
@@ -14,10 +15,27 @@ async function ProjectsSection() {
   return <Projects projects={projects} categories={categories} />;
 }
 
-export default function Home() {
+async function HeroSection() {
+  const projects = await getProjects();
+
+  return <EditorialHero projects={projects} />;
+}
+
+// TODO: drop the ?hero=classic comparison toggle and the old Hero before merging
+export default function Home({
+  searchParams,
+}: {
+  searchParams: { hero?: string };
+}) {
   return (
     <>
-      <Hero />
+      {searchParams.hero === "classic" ? (
+        <Hero />
+      ) : (
+        <Suspense fallback={<EditorialHero projects={[]} />}>
+          <HeroSection />
+        </Suspense>
+      )}
       <MarqueeSection />
       <Suspense fallback={<ProjectsSkeleton />}>
         <ProjectsSection />
