@@ -69,10 +69,11 @@ const education = [
 ];
 
 const skills = [
-  { category: "Frontend", items: ["React", "Next.js", "TypeScript", "Tailwind CSS"] },
-  { category: "Backend", items: ["Node.js", "Python", "PostgreSQL", "Firebase"] },
+  { category: "Frontend", items: ["React", "Next.js", "Shadcn", "Tailwind"] },
+  { category: "Backend", items: ["Node.js", "NestJS", "Express", "PostgreSQL", "Firebase", "MongoDB"] },
+  { category: "Tools", items: ["Stripe", "Chargebee", "Clickhouse", "Claude", "Codex", "Devin", "Unity",] },
+  { category: "Languages", items: ["Typescript", "Javascript", "Python", "SQL", "C#"] },
   { category: "Design", items: ["Figma", "After Effects", "Illustrator"] },
-  { category: "Other", items: ["Unity", "C#", "Git", "Sanity"] },
 ];
 
 function ExperienceCard() {

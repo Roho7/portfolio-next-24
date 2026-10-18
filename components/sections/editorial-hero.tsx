@@ -332,7 +332,7 @@ export function EditorialHero({ projects }: { projects: ProjectCard[] }) {
         <MetaItem label="Based in" delay={0.15}>
           Bangalore, India
         </MetaItem>
-        <MetaItem label="Currently" delay={0.2}>
+        {/* <MetaItem label="Currently" delay={0.2}>
           <a
             href="https://fireflies.ai"
             target="_blank"
@@ -341,7 +341,7 @@ export function EditorialHero({ projects }: { projects: ProjectCard[] }) {
           >
             Fireflies AI
           </a>
-        </MetaItem>
+        </MetaItem> */}
         <MetaItem label="Status" delay={0.25}>
           <span className="inline-flex items-center gap-2">
             <span className="relative flex h-2 w-2">
