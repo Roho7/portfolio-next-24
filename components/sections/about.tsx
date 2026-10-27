@@ -7,74 +7,7 @@ import { motion } from "motion/react";
 import { Briefcase, GraduationCap, MapPin, Calendar, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { useCreepTrigger } from "@/components/ui/creep-peek";
-
-const experience = [
-  {
-    company: "Fireflies AI",
-    role: "Senior Full-Stack Engineer @ Payments Team",
-    period: "2026",
-    description: "Scaling the payments infrastructure with 20+ million monthly active users.",
-    link: "https://fireflies.ai/",
-  },
-  {
-    company: "Periskope",
-    role: "Senior Founding Engineer",
-    period: "2026",
-    description: "Building the AI Agents and Automations for WhatsApp at Periskope",
-    link: "https://periskope.app/",
-  },
-  {
-    company: "Periskope",
-    role: "Full-Stack Developer",
-    period: "2023 - 2025",
-    description: "One of the first 5 employees. Owned large features end to end.",
-    link: "https://periskope.app/",
-  },
-  {
-    company: "SimpliML",
-    role: "Full-Stack Developer",
-    period: "2023",
-    description: "Built the foundation of the product from ground up.",
-    link: "https://simpliml.com/",
-  },
-  {
-    company: "Frenzopay",
-    role: "UI/UX Designer",
-    period: "2022 - 2023",
-    description: "Solo designer. Built the entire product design from scratch.",
-    link: "https://frenzopay.com/",
-  },
-];
-
-const education = [
-  {
-    degree: "M.Sc. Human-Computer Interaction",
-    institution: "University of Nottingham",
-    period: "2023 - 2024",
-    note: "Distinction",
-  },
-  {
-    degree: "CS50x: Introduction to Computer Science",
-    institution: "Harvard University",
-    period: "2023",
-    note: "Certificate",
-  },
-  {
-    degree: "B.Sc. Neuroscience",
-    institution: "Amity University Noida",
-    period: "2020 - 2023",
-    note: "",
-    summonsCreep: true,
-  },
-];
-
-const skills = [
-  { category: "Frontend", items: ["React", "Next.js", "Shadcn", "Tailwind"] },
-  { category: "Backend", items: ["Node.js", "NestJS", "Express", "PostgreSQL", "Firebase", "MongoDB"] },
-  { category: "Tools", items: ["Stripe", "Chargebee", "Clickhouse", "Claude", "Codex", "Devin", "Unity",] },
-  { category: "Languages", items: ["Typescript", "Javascript", "Python", "SQL", "C#"] },
-  { category: "Design", items: ["Figma", "After Effects", "Illustrator"] },
-];
+import { experience, education, skills } from "@/lib/profile";
 
 function ExperienceCard() {
   return (

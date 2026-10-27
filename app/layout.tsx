@@ -10,6 +10,9 @@ import "./globals.css";
 import { Navbar } from "@/components/ui/navbar";
 import { Footer } from "@/components/ui/footer";
 import { CreepPeek } from "@/components/ui/creep-peek";
+import { JsonLd } from "@/components/ui/json-ld";
+import { site } from "@/lib/profile";
+import { personJsonLd, websiteJsonLd } from "@/lib/seo";
 
 const displayFont = Space_Grotesk({
   subsets: ["latin"],
@@ -44,41 +47,57 @@ const serifFont = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(site.url),
   title: {
-    default: "Rohosen Bhattacharya | Full-Stack Developer & Designer",
+    default: site.title,
     template: "%s | Rohosen Bhattacharya",
   },
-  description:
-    "Full-stack developer and designer crafting digital experiences that blend beautiful interfaces with powerful functionality.",
+  description: site.description,
   keywords: [
+    "Rohosen Bhattacharya",
+    "Roho",
     "Full-Stack Developer",
+    "Senior Full-Stack Engineer",
     "UI/UX Designer",
+    "Human-Computer Interaction",
+    "Payments Engineer",
+    "AI Agents",
     "React",
     "Next.js",
     "TypeScript",
+    "NestJS",
     "Web Development",
   ],
-  authors: [{ name: "Rohosen Bhattacharya" }],
-  creator: "Rohosen Bhattacharya",
+  authors: [{ name: site.name, url: site.url }],
+  creator: site.name,
+  alternates: {
+    canonical: "/",
+    types: { "text/markdown": "/llms.txt" },
+  },
   openGraph: {
-    type: "website",
+    type: "profile",
     locale: "en_US",
-    url: "https://roho.live",
-    title: "Rohosen Bhattacharya | Full-Stack Developer & Designer",
-    description:
-      "Full-stack developer and designer crafting digital experiences that blend beautiful interfaces with powerful functionality.",
-    siteName: "Rohosen Bhattacharya",
+    url: site.url,
+    title: site.title,
+    description: site.description,
+    siteName: site.name,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rohosen Bhattacharya | Full-Stack Developer & Designer",
-    description:
-      "Full-stack developer and designer crafting digital experiences.",
-    creator: "@Rohosen_",
+    title: site.title,
+    description: site.description,
+    creator: site.twitterHandle,
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
+    },
   },
 };
 
@@ -94,6 +113,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="font-sans antialiased">
+        <JsonLd data={[personJsonLd(), websiteJsonLd()]} />
         <Navbar />
         <main>{children}</main>
         <Footer />

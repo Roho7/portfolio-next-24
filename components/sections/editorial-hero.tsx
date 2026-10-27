@@ -323,7 +323,7 @@ export function EditorialHero({ projects }: { projects: ProjectCard[] }) {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen flex flex-col justify-between px-4 md:px-8 pt-24 md:pt-28 pb-10"
+      className="relative overflow-x-clip min-h-screen flex flex-col justify-between px-4 md:px-8 pt-24 md:pt-28 pb-10"
     >
       <div className="grid grid-cols-2 md:grid-cols-4 gap-y-4 gap-x-6 font-mono text-[11px] uppercase tracking-wider">
         <MetaItem label="Role" delay={0.1}>
