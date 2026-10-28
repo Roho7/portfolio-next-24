@@ -3,20 +3,17 @@
 import {
   type MotionValue,
   motion,
-  useMotionValue,
   useReducedMotion,
   useScroll,
-  useSpring,
   useTransform,
-  useVelocity,
 } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight } from "lucide-react";
-import { urlFor } from "@/sanity/lib/image";
 import type { ProjectCard } from "@/sanity/lib/types";
 import { cn } from "@/lib/utils";
+import { CursorFollower, EASE_OUT, useRelativeCursor } from "@/components/ui/cursor-follower";
+import { ProjectList } from "@/components/ui/project-list";
 
 const NAME = "Rohosen";
 // Where the name breaks onto a second line on mobile: ROHO / SEN
@@ -28,8 +25,6 @@ const NAME_LINES = [
 const LOCATION = "Based in India";
 const TIMEZONE = "Asia/Kolkata";
 const MAX_PROJECTS = 5;
-
-const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 
 const GLITCH_GLYPHS = "#%&@$*/<>{}[]=+?!01ΣΔ§¥ABCDEFGHJKMNPQRTUVWXYZ";
 const GLITCH_START_DELAY = 1600;
@@ -105,160 +100,6 @@ function MetaItem({
   );
 }
 
-function ProjectRow({
-  project,
-  index,
-  isActive,
-  isDimmed,
-  onEnter,
-}: {
-  project: ProjectCard;
-  index: number;
-  isActive: boolean;
-  isDimmed: boolean;
-  onEnter: () => void;
-}) {
-  return (
-    <motion.li
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 1.1 + index * 0.07, ease: EASE_OUT }}
-    >
-      <Link
-        href={`/project/${project.slug.current}`}
-        onMouseEnter={onEnter}
-        onFocus={onEnter}
-        className={cn(
-          "group grid grid-cols-[2.5rem_1fr_auto] md:grid-cols-[3rem_1fr_12rem_4rem_1.5rem] items-baseline gap-x-4",
-          "border-t border-border py-3 md:py-4 transition-opacity duration-300",
-          isDimmed && "opacity-30"
-        )}
-      >
-        <span className="font-mono text-xs text-muted-foreground">
-          {String(index + 1).padStart(2, "0")}
-        </span>
-        <span
-          className={cn(
-            "font-hero text-2xl md:text-3xl font-semibold tracking-tight transition-transform duration-500",
-            isActive && "md:translate-x-3 text-primary"
-          )}
-        >
-          {project.title}
-        </span>
-        <span className="hidden md:block font-mono text-xs uppercase text-muted-foreground truncate">
-          {project.category?.title}
-        </span>
-        <span className="font-mono text-xs text-muted-foreground md:text-right">
-          {project.year}
-        </span>
-        <ArrowUpRight
-          className={cn(
-            "hidden md:block w-5 h-5 transition-all duration-300",
-            isActive ? "text-primary rotate-45" : "text-muted-foreground"
-          )}
-        />
-      </Link>
-    </motion.li>
-  );
-}
-
-// Tracks the cursor relative to a container, for elements that float with the pointer.
-function useRelativeCursor<T extends HTMLElement>() {
-  const ref = useRef<T>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const onMouseMove = (e: React.MouseEvent<T>) => {
-    const rect = ref.current?.getBoundingClientRect();
-    if (!rect) return;
-    x.set(e.clientX - rect.left);
-    y.set(e.clientY - rect.top);
-  };
-
-  return { ref, x, y, onMouseMove };
-}
-
-// Springs toward the cursor and tilts with horizontal velocity.
-function CursorFollower({
-  x,
-  y,
-  visible,
-  offsetClassName,
-  className,
-  children,
-}: {
-  x: MotionValue<number>;
-  y: MotionValue<number>;
-  visible: boolean;
-  offsetClassName: string;
-  className?: string;
-  children: React.ReactNode;
-}) {
-  const springX = useSpring(x, { stiffness: 220, damping: 28, mass: 0.6 });
-  const springY = useSpring(y, { stiffness: 220, damping: 28, mass: 0.6 });
-  const velocityX = useVelocity(springX);
-  const rotate = useTransform(velocityX, [-2000, 0, 2000], [-8, 0, 8], {
-    clamp: true,
-  });
-
-  return (
-    <motion.div
-      aria-hidden
-      style={{ x: springX, y: springY }}
-      className="pointer-events-none absolute left-0 top-0 z-20 hidden md:block"
-    >
-      <div className={offsetClassName}>
-        <motion.div
-          style={{ rotate }}
-          animate={{ opacity: visible ? 1 : 0, scale: visible ? 1 : 0.85 }}
-          transition={{ duration: 0.3, ease: EASE_OUT }}
-          className={className}
-        >
-          {children}
-        </motion.div>
-      </div>
-    </motion.div>
-  );
-}
-
-function CursorPreview({
-  projects,
-  activeIndex,
-  x,
-  y,
-}: {
-  projects: ProjectCard[];
-  activeIndex: number | null;
-  x: MotionValue<number>;
-  y: MotionValue<number>;
-}) {
-  return (
-    <CursorFollower
-      x={x}
-      y={y}
-      visible={activeIndex !== null}
-      offsetClassName="translate-x-10 -translate-y-1/2"
-      className="relative w-[22rem] aspect-[16/10] overflow-hidden rounded-lg"
-    >
-      {projects.map((project, i) =>
-        project.heroImage?.asset ? (
-          <Image
-            key={project._id}
-            src={urlFor(project.heroImage).width(720).height(450).url()}
-            alt=""
-            fill
-            sizes="352px"
-            className={cn(
-              "object-cover transition-opacity duration-300",
-              i === activeIndex ? "opacity-100" : "opacity-0"
-            )}
-          />
-        ) : null
-      )}
-    </CursorFollower>
-  );
-}
-
 const styledText = (text: string) => <em className="text-primary">{text}</em>;
 
 const TOOLTIP_LINES = [
@@ -302,11 +143,9 @@ function NameTooltip({
 export function EditorialHero({ projects }: { projects: ProjectCard[] }) {
   const sectionRef = useRef<HTMLElement>(null);
   const reduceMotion = useReducedMotion();
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [isNameHovered, setIsNameHovered] = useState(false);
   const [tooltipIndex, setTooltipIndex] = useState(0);
   const glitches = useNameGlitch(NAME.length, !reduceMotion);
-  const listCursor = useRelativeCursor<HTMLDivElement>();
   const nameCursor = useRelativeCursor<HTMLDivElement>();
 
   const { scrollYProgress } = useScroll({
@@ -429,37 +268,16 @@ export function EditorialHero({ projects }: { projects: ProjectCard[] }) {
       </motion.div>
 
       {featured.length > 0 && (
-        <div
-          ref={listCursor.ref}
-          onMouseMove={listCursor.onMouseMove}
-          onMouseLeave={() => setActiveIndex(null)}
-          className="relative"
-        >
-          <div className="flex items-baseline justify-between pb-3 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
-            <span>Selected work ({String(featured.length).padStart(2, "0")})</span>
+        <ProjectList
+          projects={featured}
+          label="Selected work"
+          delay={1.1}
+          action={
             <Link href="#projects" className="hover:text-primary transition-colors">
               All projects ↓
             </Link>
-          </div>
-          <ul className="border-b border-border">
-            {featured.map((project, i) => (
-              <ProjectRow
-                key={project._id}
-                project={project}
-                index={i}
-                isActive={activeIndex === i}
-                isDimmed={activeIndex !== null && activeIndex !== i}
-                onEnter={() => setActiveIndex(i)}
-              />
-            ))}
-          </ul>
-          <CursorPreview
-            projects={featured}
-            activeIndex={activeIndex}
-            x={listCursor.x}
-            y={listCursor.y}
-          />
-        </div>
+          }
+        />
       )}
     </section>
   );

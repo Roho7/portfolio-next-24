@@ -37,10 +37,10 @@ export default function Home({
         </Suspense>
       )}
       <MarqueeSection />
+      <About />
       <Suspense fallback={<ProjectsSkeleton />}>
         <ProjectsSection />
       </Suspense>
-      <About />
     </>
   );
 }
