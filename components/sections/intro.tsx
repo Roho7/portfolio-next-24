@@ -51,7 +51,7 @@ export function Intro({ contributions }: { contributions: Contributions | null }
         <div className="flex flex-col gap-4 text-lg leading-relaxed text-muted-foreground text-pretty">
           <p>
             I run <InlineLink href="https://officepaglu.com/">Office Paglu</InlineLink>, a
-            place where I make find cool, work-related (and slightly unprofessional) tees.
+            place where I sell cool, work-related (and slightly unprofessional) tees.
           </p>
           <p>
             I was a Senior Founding Engineer at <InlineLink href="https://periskope.app/">Periskope</InlineLink>,
