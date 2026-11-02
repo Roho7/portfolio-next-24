@@ -26,7 +26,7 @@ function InlineLink({ href, children }: { href: string; children: React.ReactNod
 
 export function Intro({ contributions }: { contributions: Contributions | null }) {
   return (
-    <section id="intro" className="px-4 md:px-6 py-20 md:py-28">
+    <section id="about" className="px-4 md:px-6 py-20 md:py-28">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -36,7 +36,7 @@ export function Intro({ contributions }: { contributions: Contributions | null }
       >
         <div className="flex items-center gap-5">
           <Image
-            src="/cropped-face.png"
+            src="/full-face.png"
             alt={site.name}
             width={96}
             height={96}
@@ -55,10 +55,10 @@ export function Intro({ contributions }: { contributions: Contributions | null }
           </p>
           <p>
             I was a Senior Founding Engineer at <InlineLink href="https://periskope.app/">Periskope</InlineLink>,
-            was building AI Agents for WhatsApp. Made a lot of customers happy and learnt almost everything I know about building products.
+            building AI Agents for WhatsApp. Made a lot of customers happy and learnt almost everything I know about building products.
           </p>
           <p>
-            Recently, I joined <InlineLink href="https://fireflies.ai/">Fireflies AI</InlineLink>, as a Senior Engineer in the payments team, where I built payments infrastructures
+            Recently, I joined <InlineLink href="https://fireflies.ai/">Fireflies AI</InlineLink>, as a Senior Engineer in the payments team, where I'm building payments infrastructures
             and GTM tools.
           </p>
           <p>

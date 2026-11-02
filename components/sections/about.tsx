@@ -96,7 +96,7 @@ function Education() {
 
 export function About() {
   return (
-    <section id="about" className="px-4 md:px-6 py-20 md:py-28">
+    <section className="px-4 md:px-6 py-20 md:py-28">
       <div className="max-w-3xl mx-auto flex flex-col gap-20">
         <Experience />
         <Education />

@@ -1,8 +1,10 @@
 "use client";
 
+import { ArrowUpRight, Github, Linkedin, Mail, Twitter } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
-import { Github, Linkedin, Twitter, Mail, ArrowUpRight } from "lucide-react";
+
+import { site } from "@/lib/profile";
 
 const socialLinks = [
   { href: "https://github.com/roho7", icon: Github, label: "GitHub" },
@@ -54,6 +56,20 @@ export function Footer() {
                 <ArrowUpRight className="w-6 h-6 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
               </Link>
             </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              <Link
+                href={`https://wa.me/${site.whatsapp}?text=${encodeURIComponent("Hi Roho! I'd like to discuss a project with you.")}`}
+                className="group inline-flex items-center gap-3 text-2xl md:text-3xl font-display font-bold hover:text-primary transition-colors"
+              >
+                +919836025090
+                <ArrowUpRight className="w-6 h-6 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+              </Link>
+            </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -86,12 +102,8 @@ export function Footer() {
           className="mt-16 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4"
         >
           <p className="text-muted-foreground text-sm">
-            © {new Date().getFullYear()} Rohosen Bhattacharya. All rights reserved.
-          </p>
-          <p className="text-muted-foreground text-sm">
-            Designed & Built with{" "}
-            <span className="text-primary">Next.js</span> &{" "}
-            <span className="text-primary">Sanity</span>
+            Designed & Built with care by
+            <span className="text-primary">{" "}Roho</span>
           </p>
         </motion.div>
       </div>
