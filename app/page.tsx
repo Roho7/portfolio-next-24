@@ -1,18 +1,19 @@
-import { Hero } from "@/components/sections/hero";
-import { EditorialHero } from "@/components/sections/editorial-hero";
-import { Projects, ProjectsSkeleton } from "@/components/sections/projects";
-import { About } from "@/components/sections/about";
-import { MarqueeSection } from "@/components/sections/marquee-section";
-import { getProjects, getCategories } from "@/app/_actions/sanity.actions";
 import { Suspense } from "react";
 
-async function ProjectsSection() {
-  const [projects, categories] = await Promise.all([
-    getProjects(),
-    getCategories(),
-  ]);
+import { getProjects } from "@/app/_actions/sanity.actions";
+import { About } from "@/components/sections/about";
+import { EditorialHero } from "@/components/sections/editorial-hero";
+import { Hero } from "@/components/sections/hero";
+import { Intro } from "@/components/sections/intro";
+import { MarqueeSection } from "@/components/sections/marquee-section";
+import { Socials } from "@/components/sections/socials";
+import { getContributions } from "@/lib/github";
+import { site } from "@/lib/profile";
 
-  return <Projects projects={projects} categories={categories} />;
+async function IntroSection() {
+  const contributions = await getContributions(site.github);
+
+  return <Intro contributions={contributions} />;
 }
 
 async function HeroSection() {
@@ -36,11 +37,12 @@ export default function Home({
           <HeroSection />
         </Suspense>
       )}
+      <Suspense fallback={<Intro contributions={null} />}>
+        <IntroSection />
+      </Suspense>
       <MarqueeSection />
       <About />
-      <Suspense fallback={<ProjectsSkeleton />}>
-        <ProjectsSection />
-      </Suspense>
+      <Socials />
     </>
   );
 }

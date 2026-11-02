@@ -1,13 +1,14 @@
 "use client";
 
+import { ArrowLeft, ExternalLink, Figma, Github, Play } from "lucide-react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { urlFor } from "@/sanity/lib/image";
 import type { Project } from "@/sanity/lib/types";
-import { ArrowLeft, ExternalLink, Github, Figma, Play } from "lucide-react";
 
 interface CaseStudyHeroProps {
   project: Project;
@@ -25,10 +26,10 @@ export function CaseStudyHero({ project }: CaseStudyHeroProps) {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <Link href="/#projects">
+          <Link href="/work">
             <Button variant="ghost" className="mb-8 -ml-4">
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to projects
+              All work
             </Button>
           </Link>
         </motion.div>

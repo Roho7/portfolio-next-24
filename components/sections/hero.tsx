@@ -1,10 +1,10 @@
 "use client";
 
-import { motion } from "motion/react";
-import { AnimatedText, AnimatedWords } from "@/components/ui/animated-text";
-import { Button } from "@/components/ui/button";
 import { ArrowDown, Sparkles } from "lucide-react";
+import { motion } from "motion/react";
 import Link from "next/link";
+
+import { Button } from "@/components/ui/button";
 import { SlotMachine } from "@/components/ui/slot-machine";
 
 export function Hero() {
@@ -86,7 +86,7 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 1 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <Link href="#projects">
+            <Link href="/work">
               <Button size="lg" variant="glow">
                 View my work
               </Button>
@@ -111,7 +111,7 @@ export function Hero() {
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
           <Link
-            href="#projects"
+            href="/work"
             className="text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowDown className="w-6 h-6" />

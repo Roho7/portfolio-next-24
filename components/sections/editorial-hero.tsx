@@ -1,8 +1,8 @@
 "use client";
 
 import {
-  type MotionValue,
   motion,
+  type MotionValue,
   useReducedMotion,
   useScroll,
   useTransform,
@@ -10,10 +10,11 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import type { ProjectCard } from "@/sanity/lib/types";
-import { cn } from "@/lib/utils";
+
 import { CursorFollower, EASE_OUT, useRelativeCursor } from "@/components/ui/cursor-follower";
 import { ProjectList } from "@/components/ui/project-list";
+import { cn } from "@/lib/utils";
+import type { ProjectCard } from "@/sanity/lib/types";
 
 const NAME = "Rohosen";
 // Where the name breaks onto a second line on mobile: ROHO / SEN
@@ -273,8 +274,8 @@ export function EditorialHero({ projects }: { projects: ProjectCard[] }) {
           label="Selected work"
           delay={1.1}
           action={
-            <Link href="#projects" className="hover:text-primary transition-colors">
-              All projects ↓
+            <Link href="/work" className="hover:text-primary transition-colors">
+              All work →
             </Link>
           }
         />

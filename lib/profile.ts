@@ -9,6 +9,9 @@ export const site = {
   location: "India",
   email: "rohosen2@gmail.com",
   twitterHandle: "@Rohosen_",
+  github: "roho7",
+  linkedin: "rohosen-bhattacharya-9311611aa",
+  whatsapp: "919836025090",
   sameAs: [
     "https://github.com/roho7",
     "https://www.linkedin.com/in/rohosen-bhattacharya-9311611aa/",
@@ -22,6 +25,7 @@ export const experience = [
     role: "Senior Full-Stack Engineer @ Payments Team",
     period: "2026",
     description: "Scaling the payments infrastructure with 20+ million monthly active users.",
+    stack: ["TypeScript", "NestJS", "Stripe", "Chargebee", "MongoDB", "Clickhouse"],
     link: "https://fireflies.ai/",
   },
   {
@@ -29,6 +33,7 @@ export const experience = [
     role: "Senior Founding Engineer",
     period: "2026",
     description: "Building the AI Agents and Automations for WhatsApp at Periskope",
+    stack: ["TypeScript", "Next.js", "Node.js", "PostgreSQL", "Claude"],
     link: "https://periskope.app/",
   },
   {
@@ -36,6 +41,7 @@ export const experience = [
     role: "Full-Stack Developer",
     period: "2023 - 2025",
     description: "One of the first 5 employees. Owned large features end to end.",
+    stack: ["React", "Next.js", "TypeScript", "Node.js", "PostgreSQL", "Tailwind"],
     link: "https://periskope.app/",
   },
   {
@@ -43,6 +49,7 @@ export const experience = [
     role: "Full-Stack Developer",
     period: "2023",
     description: "Built the foundation of the product from ground up.",
+    stack: ["React", "Next.js", "Python", "Tailwind"],
     link: "https://simpliml.com/",
   },
   {
@@ -50,6 +57,7 @@ export const experience = [
     role: "UI/UX Designer",
     period: "2022 - 2023",
     description: "Solo designer. Built the entire product design from scratch.",
+    stack: ["Figma", "Illustrator", "After Effects"],
     link: "https://frenzopay.com/",
   },
 ];

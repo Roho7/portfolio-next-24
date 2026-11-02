@@ -1,17 +1,19 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { motion, useScroll, useTransform, useSpring, useVelocity, useMotionValueEvent } from "motion/react";
+import { Menu, X } from "lucide-react";
+import { motion,useScroll, useSpring, useTransform, useVelocity } from "motion/react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Button } from "./button";
-import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import Image from "next/image";
+
+import { cn } from "@/lib/utils";
+
+import { Button } from "./button";
 
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "/#projects", label: "Projects" },
+  { href: "/work", label: "Work" },
   { href: "/#about", label: "About" },
   { href: "/#contact", label: "Contact" },
 ];

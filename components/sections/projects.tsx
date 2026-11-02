@@ -1,9 +1,10 @@
 "use client";
 
-import { ProjectList } from "@/components/ui/project-list";
-import type { ProjectCard as ProjectCardType, Category } from "@/sanity/lib/types";
 import { useState } from "react";
+
+import { ProjectList } from "@/components/ui/project-list";
 import { cn } from "@/lib/utils";
+import type { Category,ProjectCard as ProjectCardType } from "@/sanity/lib/types";
 
 interface ProjectsProps {
   projects: ProjectCardType[];
@@ -44,11 +45,11 @@ export function Projects({ projects, categories }: ProjectsProps) {
   ).sort((a, b) => (a.order || 0) - (b.order || 0));
 
   return (
-    <section id="projects" className="scroll-mt-24 px-4 md:px-8 py-20 md:py-32">
+    <section id="projects">
       <ProjectList
         key={activeCategory ?? "all"}
         projects={filteredProjects}
-        label="All work"
+        label="Projects"
         action={
           categories.length > 0 && (
             <div className="flex flex-wrap gap-x-4 gap-y-1">
@@ -77,9 +78,9 @@ export function Projects({ projects, categories }: ProjectsProps) {
 
 export function ProjectsSkeleton() {
   return (
-    <section id="projects" className="px-4 md:px-8 py-20 md:py-32">
+    <section id="projects">
       <div className="pb-3 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
-        All work
+        Projects
       </div>
       <ul className="border-b border-border">
         {[...Array(6)].map((_, i) => (

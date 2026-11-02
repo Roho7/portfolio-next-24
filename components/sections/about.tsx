@@ -1,190 +1,106 @@
 "use client";
 
-import { Section, SectionHeader } from "@/components/ui/section";
-import { MagicCard, MagicContainer } from "@/components/ui/magic-card";
-import { Badge } from "@/components/ui/badge";
+import { ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
-import { Briefcase, GraduationCap, MapPin, Calendar, ExternalLink } from "lucide-react";
-import Link from "next/link";
-import { useCreepTrigger } from "@/components/ui/creep-peek";
-import { experience, education, skills } from "@/lib/profile";
+import { type ReactNode } from "react";
 
-function ExperienceCard() {
+import { useCreepTrigger } from "@/components/ui/creep-peek";
+import { EASE_OUT } from "@/components/ui/cursor-follower";
+import { education, experience } from "@/lib/profile";
+
+const domainOf = (url: string) => new URL(url).hostname.replace(/^www\./, "");
+
+function ListHeading({ children }: { children: ReactNode }) {
+  return <h2 className="font-serif italic text-4xl md:text-5xl mb-6 md:mb-8">{children}</h2>;
+}
+
+function Row({ index, children }: { index: number; children: ReactNode }) {
   return (
-    <MagicCard className="p-8 h-full">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="p-2 rounded-lg bg-primary/10">
-          <Briefcase className="w-5 h-5 text-primary" />
-        </div>
-        <h3 className="text-xl font-display font-bold">Experience</h3>
-      </div>
-      <div className="space-y-6">
-        {experience.map((exp, index) => (
-          <motion.div
-            key={exp.company}
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.1 }}
-            className="group"
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <Link
-                  href={exp.link}
-                  target="_blank"
-                  className="inline-flex items-center gap-2 text-lg font-semibold group-hover:text-primary transition-colors"
-                >
-                  {exp.company}
-                  <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </Link>
-                <p className="text-muted-foreground">{exp.role}</p>
-                <p className="text-sm text-muted-foreground mt-1">{exp.description}</p>
-              </div>
-              <Badge variant="outline" className="shrink-0">
-                {exp.period}
-              </Badge>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </MagicCard>
+    <motion.li
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.06, ease: EASE_OUT }}
+      className="flex flex-col gap-1.5 py-6 border-b border-border last:border-b-0"
+    >
+      {children}
+    </motion.li>
   );
 }
 
-function EducationCard() {
+function RowTitle({ title, period }: { title: ReactNode; period: string }) {
+  return (
+    <div className="flex flex-col-reverse sm:flex-row sm:items-baseline sm:justify-between gap-x-6 gap-y-1">
+      <h3 className="text-xl md:text-2xl font-medium tracking-tight">{title}</h3>
+      <span className="shrink-0 font-mono text-xs uppercase tracking-wider text-muted-foreground">
+        {period}
+      </span>
+    </div>
+  );
+}
+
+function Experience() {
+  return (
+    <div>
+      <ListHeading>experience.</ListHeading>
+      <ul>
+        {experience.map((exp, index) => (
+          <Row key={`${exp.company}-${exp.role}`} index={index}>
+            <RowTitle title={`${exp.role}, ${exp.company}`} period={exp.period} />
+            <a
+              href={exp.link}
+              target="_blank"
+              rel="noreferrer"
+              className="group inline-flex w-fit items-center gap-1 text-foreground/90 hover:text-primary transition-colors"
+            >
+              <span className="text-muted-foreground">at,</span> {domainOf(exp.link)}
+              <ArrowUpRight className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            </a>
+            <p className="text-muted-foreground mt-1">{exp.description}</p>
+            <p className="font-mono text-sm text-muted-foreground/80 mt-2 leading-relaxed">
+              {exp.stack.join(" / ")}
+            </p>
+          </Row>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function Education() {
   const creepTrigger = useCreepTrigger();
 
   return (
-    <MagicCard className="p-8 h-full">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="p-2 rounded-lg bg-primary/10">
-          <GraduationCap className="w-5 h-5 text-primary" />
-        </div>
-        <h3 className="text-xl font-display font-bold">Education</h3>
-      </div>
-      <div className="space-y-6">
+    <div>
+      <ListHeading>education.</ListHeading>
+      <ul>
         {education.map((edu, index) => (
-          <motion.div
-            key={edu.degree}
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.1 }}
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <h4 className="text-lg font-semibold">{edu.degree}</h4>
-                <p className="text-muted-foreground">
-                  {"summonsCreep" in edu ? (
-                    <span {...creepTrigger} className="cursor-default">
-                      {edu.institution}
-                    </span>
-                  ) : (
-                    edu.institution
-                  )}
-                </p>
-                {edu.note && (
-                  <Badge variant="ghost" className="mt-2">
-                    {edu.note}
-                  </Badge>
-                )}
-              </div>
-              <Badge variant="outline" className="shrink-0">
-                {edu.period}
-              </Badge>
-            </div>
-          </motion.div>
+          <Row key={edu.degree} index={index}>
+            <RowTitle title={edu.degree} period={edu.period} />
+            <p className="text-muted-foreground">
+              {"summonsCreep" in edu ? (
+                <span {...creepTrigger} className="cursor-default">
+                  {edu.institution}
+                </span>
+              ) : (
+                edu.institution
+              )}
+              {edu.note && <span className="text-foreground/80"> · {edu.note}</span>}
+            </p>
+          </Row>
         ))}
-      </div>
-    </MagicCard>
-  );
-}
-
-function StatsCard() {
-  return (
-    <MagicCard className="p-8">
-      <div className="space-y-4">
-        <div className="flex items-center gap-3">
-          <MapPin className="w-5 h-5 text-primary" />
-          <div>
-            <p className="text-sm text-muted-foreground">Location</p>
-            <p className="font-semibold">India</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-3">
-          <Calendar className="w-5 h-5 text-primary" />
-          <div>
-            <p className="text-sm text-muted-foreground">Experience</p>
-            <p className="font-semibold">3+ Years</p>
-          </div>
-        </div>
-      </div>
-    </MagicCard>
-  );
-}
-
-function SkillsCard() {
-  return (
-    <MagicCard className="p-8 h-full">
-      <h3 className="text-xl font-display font-bold mb-6">Skills</h3>
-      <div className="space-y-6">
-        {skills.map((skillGroup, index) => (
-          <motion.div
-            key={skillGroup.category}
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.1 }}
-          >
-            <p className="text-sm text-muted-foreground mb-2">{skillGroup.category}</p>
-            <div className="flex flex-wrap gap-2">
-              {skillGroup.items.map((skill) => (
-                <Badge key={skill} variant="secondary">
-                  {skill}
-                </Badge>
-              ))}
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </MagicCard>
+      </ul>
+    </div>
   );
 }
 
 export function About() {
   return (
-    <Section id="about" className="bg-card/30">
-      <div className="container mx-auto px-4 md:px-6">
-        <SectionHeader
-          number="02"
-          title="About Me"
-          subtitle="A blend of research, design, and development expertise."
-        />
-
-        <MagicContainer className="grid lg:grid-cols-3 gap-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="lg:col-span-2 space-y-4"
-          >
-            <ExperienceCard />
-            <EducationCard />
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="space-y-6"
-          >
-            <StatsCard />
-            <SkillsCard />
-          </motion.div>
-        </MagicContainer>
+    <section id="about" className="px-4 md:px-6 py-20 md:py-28">
+      <div className="max-w-3xl mx-auto flex flex-col gap-20">
+        <Experience />
+        <Education />
       </div>
-    </Section>
+    </section>
   );
 }
