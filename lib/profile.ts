@@ -25,7 +25,7 @@ export const experience = [
     role: "Senior Full-Stack Engineer @ Payments Team",
     period: "2026",
     description: "Scaling the payments infrastructure with 20+ million monthly active users.",
-    stack: ["TypeScript", "NestJS", "Stripe", "Chargebee", "MongoDB", "Clickhouse"],
+    stack: ["TypeScript", "NestJS", "Stripe", "MongoDB", "Devin"],
     link: "https://fireflies.ai/",
   },
   {
@@ -33,7 +33,7 @@ export const experience = [
     role: "Senior Founding Engineer",
     period: "2026",
     description: "Building the AI Agents and Automations for WhatsApp at Periskope",
-    stack: ["TypeScript", "Next.js", "Node.js", "PostgreSQL", "Claude"],
+    stack: ["Next.js", "Node.js", "PostgreSQL", "RabbitMQ", "GCP", "Clickhouse", "Chargebee", "Claude", "Google AI SDK",],
     link: "https://periskope.app/",
   },
   {
@@ -51,14 +51,6 @@ export const experience = [
     description: "Built the foundation of the product from ground up.",
     stack: ["React", "Next.js", "Python", "Tailwind"],
     link: "https://simpliml.com/",
-  },
-  {
-    company: "Frenzopay",
-    role: "UI/UX Designer",
-    period: "2022 - 2023",
-    description: "Solo designer. Built the entire product design from scratch.",
-    stack: ["Figma", "Illustrator", "After Effects"],
-    link: "https://frenzopay.com/",
   },
 ];
 
